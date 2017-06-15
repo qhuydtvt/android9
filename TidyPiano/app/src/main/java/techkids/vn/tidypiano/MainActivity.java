@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (firstTouch.getAction() == TouchAction.DOWN) {
             ImageView pressedKey = findKeyByTouch(firstTouch);
-            if (!checkPressedKey(pressedKey)) {
+            if (pressedKey != null && !checkPressedKey(pressedKey)) {
                 //TODO: Play note
                 String note = pressedKey.getTag().toString();
                 NotePlayer.play(note);
@@ -69,11 +69,13 @@ public class MainActivity extends AppCompatActivity {
         else if (firstTouch.getAction() == TouchAction.UP) {
             ImageView pressedKey = findKeyByTouch(firstTouch);
 
-            Iterator<TouchInfo> touchInfoIterator = touchInfoList.iterator();
-            while(touchInfoIterator.hasNext()) {
-                TouchInfo touchInfo = touchInfoIterator.next();
-                if (touchInfo.pressedKey == pressedKey) {
-                    touchInfoIterator.remove();
+            if (pressedKey != null) {
+                Iterator<TouchInfo> touchInfoIterator = touchInfoList.iterator();
+                while(touchInfoIterator.hasNext()) {
+                    TouchInfo touchInfo = touchInfoIterator.next();
+                    if (touchInfo.touch.getTouchId() == firstTouch.getTouchId()) {
+                        touchInfoIterator.remove();
+                    }
                 }
             }
         }
@@ -81,21 +83,24 @@ public class MainActivity extends AppCompatActivity {
             for (Touch touch: touches) {
                 ImageView pressedKey = findKeyByTouch(touch);
 
-                Iterator<TouchInfo> touchInfoIterator = touchInfoList.iterator();
-                while(touchInfoIterator.hasNext()) {
-                    TouchInfo touchInfo = touchInfoIterator.next();
-                    if (touchInfo.touch.equals(touch) && touchInfo.pressedKey != pressedKey) {
-                        touchInfoIterator.remove();
+                if (pressedKey != null) {
+                    Iterator<TouchInfo> touchInfoIterator = touchInfoList.iterator();
+                    while(touchInfoIterator.hasNext()) {
+                        TouchInfo touchInfo = touchInfoIterator.next();
+                        if (touchInfo.touch.equals(touch) && touchInfo.pressedKey != pressedKey) {
+                            touchInfoIterator.remove();
+                        }
+                    }
+
+                    if (!checkPressedKey(pressedKey)) {
+                        //TODO: Play note
+                        String note = pressedKey.getTag().toString();
+                        NotePlayer.play(note);
+
+                        touchInfoList.add(new TouchInfo(pressedKey, touch));
                     }
                 }
 
-                if (!checkPressedKey(pressedKey)) {
-                    //TODO: Play note
-                    String note = pressedKey.getTag().toString();
-                    NotePlayer.play(note);
-
-                    touchInfoList.add(new TouchInfo(pressedKey, touch));
-                }
             }
         }
 
