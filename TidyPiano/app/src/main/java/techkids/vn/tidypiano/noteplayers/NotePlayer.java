@@ -24,6 +24,14 @@ public class NotePlayer {
         loadSound("cs", "sound_2", context);
         loadSound("d", "sound_3", context);
         loadSound("ds", "sound_4", context);
+        loadSound("e", "sound_5", context);
+        loadSound("f", "sound_6", context);
+        loadSound("fs", "sound_7", context);
+        loadSound("g", "sound_8", context);
+        loadSound("gs", "sound_9", context);
+        loadSound("a", "sound_10", context);
+        loadSound("as", "sound_11", context);
+        loadSound("b", "sound_12", context);
     }
 
     public static void play(String note) {
