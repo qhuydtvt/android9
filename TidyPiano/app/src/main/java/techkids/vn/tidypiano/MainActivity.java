@@ -83,15 +83,15 @@ public class MainActivity extends AppCompatActivity {
             for (Touch touch: touches) {
                 ImageView pressedKey = findKeyByTouch(touch);
 
-                if (pressedKey != null) {
-                    Iterator<TouchInfo> touchInfoIterator = touchInfoList.iterator();
-                    while(touchInfoIterator.hasNext()) {
-                        TouchInfo touchInfo = touchInfoIterator.next();
-                        if (touchInfo.touch.equals(touch) && touchInfo.pressedKey != pressedKey) {
-                            touchInfoIterator.remove();
-                        }
+                Iterator<TouchInfo> touchInfoIterator = touchInfoList.iterator();
+                while(touchInfoIterator.hasNext()) {
+                    TouchInfo touchInfo = touchInfoIterator.next();
+                    if (touchInfo.touch.equals(touch) && touchInfo.pressedKey != pressedKey) {
+                        touchInfoIterator.remove();
                     }
+                }
 
+                if (pressedKey != null) {
                     if (!checkPressedKey(pressedKey)) {
                         //TODO: Play note
                         String note = pressedKey.getTag().toString();
